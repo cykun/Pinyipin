@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:gravity="right">
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#eef"
+        android:drawableLeft="@drawable/add_friend"
+        android:paddingRight="40dp"
+        android:paddingLeft="10dp"
+        android:text="发布拼贴" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#eef"
+        android:drawableLeft="@drawable/add_friend"
+        android:paddingRight="40dp"
+        android:paddingLeft="10dp"
+        android:text="添加拼友" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="#eef"
+        android:drawableLeft="@drawable/add_group"
+        android:paddingRight="40dp"
+        android:paddingLeft="10dp"
+        android:text="添加拼群" />
+
+</LinearLayout>

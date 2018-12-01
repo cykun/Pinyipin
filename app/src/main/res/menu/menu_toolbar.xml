@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".MainActivity">
+
+    <item
+        android:id="@+id/action_search"
+        android:icon="@drawable/search"
+        android:orderInCategory="90"
+        android:title="搜索"
+        app:showAsAction="ifRoom"/>
+
+    <item
+        android:id="@+id/action_add_friend"
+        android:icon="@drawable/add_friend"
+        android:orderInCategory="90"
+        android:title="添加拼友"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_add_group"
+        android:icon="@drawable/add_group"
+        android:orderInCategory="90"
+        android:title="添加拼组"
+        app:showAsAction="never"/>
+
+
+</menu>

@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="type">
+        <item>学习</item>
+        <item>旅游</item>
+        <item>拼车</item>
+        <item>其它</item>
+    </string-array>
+</resources>

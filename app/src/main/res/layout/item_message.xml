@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="64dp"
+    android:background="#fff"
+    android:gravity="center_vertical"
+    android:paddingLeft="12dp">
+
+    <ImageView
+        android:id="@+id/iv_head"
+        android:layout_width="48dp"
+        android:layout_height="48dp"
+        android:src="@drawable/name" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="12dp"
+        android:gravity="center_vertical"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="姓名"
+                android:textSize="12sp" />
+
+            <View
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <TextView
+                android:id="@+id/tv_datatime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="2018/11/11 19:05"
+                android:textSize="10sp" />
+        </LinearLayout>
+
+
+        <TextView
+            android:id="@+id/tv_msg"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="消息"
+            android:textSize="10sp" />
+    </LinearLayout>
+</LinearLayout>
