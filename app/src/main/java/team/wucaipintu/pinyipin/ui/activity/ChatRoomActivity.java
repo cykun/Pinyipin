@@ -7,22 +7,34 @@ import android.view.View;
 
 import com.stfalcon.chatkit.messages.MessageInput;
 import com.stfalcon.chatkit.messages.MessagesList;
+import com.stfalcon.chatkit.messages.MessagesListAdapter;
 
+import java.util.Date;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import team.wucaipintu.pinyipin.R;
+import team.wucaipintu.pinyipin.bean.Author;
+import team.wucaipintu.pinyipin.bean.Message;
 
-public class ChatRoomActivity extends AppCompatActivity {
-    private Toolbar toolbar;
-    private MessageInput messageInput;
-    private MessagesList messagesList;
+public class ChatRoomActivity extends AppCompatActivity implements
+        MessageInput.InputListener, MessageInput.AttachmentsListener, MessageInput.TypingListener, MessagesListAdapter.OnLoadMoreListener {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.input)
+    MessageInput messageInput;
+
+    @BindView(R.id.messagesList)
+    MessagesList messagesList;
+
+    private MessagesListAdapter<Message> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chatroom);
-
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
-        messagesList = (MessagesList) findViewById(R.id.messagesList);
-        messageInput = (MessageInput) findViewById(R.id.input);
+        ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -30,8 +42,49 @@ public class ChatRoomActivity extends AppCompatActivity {
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                messageInput.onFocusChange(toolbar,true);
                 finish();
             }
         });
+
+        adapter=new MessagesListAdapter<>("1",null);
+        //adapter.setLoadMoreListener(this);
+        messagesList.setAdapter(adapter);
+        //messageInput.setAttachmentsListener(this);
+        messageInput.setInputListener(this);
+        //messageInput.setTypingListener(this);
+    }
+
+    @Override
+    public void onLoadMore(int page, int totalItemsCount) {
+
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    public void onBackPressed() {
+        super.onBackPressed();
+    }
+
+    public boolean onSubmit(CharSequence input) {
+        adapter.addToStart(new Message("1",input.toString(),new Author("1","123","123"),new Date()), true);
+        return true;
+    }
+
+    @Override
+    public void onAddAttachments() {
+    }
+
+    @Override
+    public void onStartTyping() {
+
+    }
+
+    @Override
+    public void onStopTyping() {
+
     }
 }

@@ -8,6 +8,8 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,35 +29,68 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import team.wucaipintu.pinyipin.R;
 import team.wucaipintu.pinyipin.bean.Comment;
 import team.wucaipintu.pinyipin.bean.PostDetail;
 import team.wucaipintu.pinyipin.ui.adapter.CommentAdapter;
 
 public class PostDetailActivity extends AppCompatActivity {
-    private Toolbar toolbar;
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
+    @BindView(R.id.tv_title)
+    TextView titleTV;
+
+    @BindView(R.id.content)
+    TextView contentTV;
+
+    @BindView(R.id.deadline)
+    TextView deallineTV;
+
+    @BindView(R.id.nikename)
+    TextView nikeNameTV;
+
+    @BindView(R.id.releasetime)
+    TextView releaseTimeTV;
+
+    @BindView(R.id.population)
+    TextView populationTV;
+
+    @BindView(R.id.neednum)
+    TextView needTV;
+
+    @BindView(R.id.nownum)
+    TextView nowTV;
+
+    @BindView(R.id.bt_add)
+    Button addBT;
+
+    @BindView(R.id.bt_send)
+    Button sendBT;
+
+    @BindView(R.id.tv_comment_num)
+    TextView commentNumTV;
+
+    @BindView(R.id.et_comment)
+    EditText msgET;
+
+    @BindView(R.id.rv_comment)
+    RecyclerView recyclerView;
+
     private int postId,userId;
-    private TextView titleTV;
-    private TextView contentTV;
-    private TextView deallineTV;
-    private TextView nikeNameTV;
-    private TextView releaseTimeTV;
-    private TextView populationTV;
-    private TextView needTV;
-    private TextView nowTV;
-    private Button addBT,sendBT;
-    private TextView commentNumTV;
     private ArrayList<Comment> comments;
     private PostDetail postDetail;
-    private RecyclerView recyclerView;
     private CommentAdapter adapter;
-    private EditText msgET;
+
     private String nikeName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
+        ButterKnife.bind(this);
 
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -68,26 +103,36 @@ public class PostDetailActivity extends AppCompatActivity {
                 finish();
             }
         });
+        msgET.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                String content=s.toString();
+                if(content.equals("")){
+                    sendBT.setClickable(false);
+                }else {
+                    sendBT.setClickable(true);
+                }
+            }
+        });
         postDetail = new PostDetail();
         comments=new ArrayList<>();
-
-        titleTV = (TextView) findViewById(R.id.tv_title);
-        deallineTV = (TextView) findViewById(R.id.deadline);
-        nikeNameTV = (TextView) findViewById(R.id.nikename);
-        releaseTimeTV = (TextView) findViewById(R.id.releasetime);
-        contentTV = (TextView) findViewById(R.id.content);
-        populationTV = (TextView) findViewById(R.id.population);
-        needTV = (TextView) findViewById(R.id.neednum);
-        nowTV = (TextView) findViewById(R.id.nownum);
-        addBT = (Button) findViewById(R.id.bt_add);
         addBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 addGroupRequest();
             }
         });
-        msgET=(EditText)findViewById(R.id.et_comment);
-        sendBT=(Button)findViewById(R.id.bt_send);
+
         sendBT.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,8 +140,13 @@ public class PostDetailActivity extends AppCompatActivity {
                 sendComment(data);
             }
         });
-        recyclerView=(RecyclerView)findViewById(R.id.rv_comment);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
+        recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false){
+            @Override
+            public boolean canScrollVertically() {
+                // 直接禁止垂直滑动
+                return false;
+            }
+        });
         adapter=new CommentAdapter(comments);
         recyclerView.setAdapter(adapter);
         Intent intent = getIntent();
@@ -113,6 +163,8 @@ public class PostDetailActivity extends AppCompatActivity {
 //    }
 
     public void addGroupRequest(){
+
+
         new Thread(new Runnable() {
             @Override
             public void run() {

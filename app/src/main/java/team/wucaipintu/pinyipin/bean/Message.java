@@ -10,6 +10,13 @@ public class Message implements IMessage {
     private Author author;
     private Date createdAt;
 
+    public Message(String id,String text,Author author,Date createAt){
+        this.id=id;
+        this.text=text;
+        this.author=author;
+        this.createdAt=createAt;
+    }
+
     @Override
     public String getId() {
         return id;

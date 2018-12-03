@@ -9,22 +9,23 @@
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
-        android:layout_height="?actionBarSize">
-    </android.support.v7.widget.Toolbar>
+        android:layout_height="?actionBarSize"/>
 
     <com.stfalcon.chatkit.messages.MessagesList
         android:id="@+id/messagesList"
-        android:layout_above="@+id/input"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:layout_above="@+id/input"
+        android:layout_below="@id/toolbar">
 
     </com.stfalcon.chatkit.messages.MessagesList>
 
     <com.stfalcon.chatkit.messages.MessageInput
         android:id="@+id/input"
-        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_alignParentBottom="true">
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:showAttachmentButton="true">
 
     </com.stfalcon.chatkit.messages.MessageInput>
 

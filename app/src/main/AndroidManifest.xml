@@ -62,9 +62,12 @@
         <activity
             android:name=".ui.activity.CreditActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.ChatRoomActivity"
+        <activity
+            android:name=".ui.activity.ChatRoomActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.MyPostActivity" />
+        <activity android:name=".ui.activity.SearchContactActivity"
             android:theme="@style/AppTheme.NoActionBar"/>
-        <activity android:name=".ui.activity.MyPostActivity"></activity>
     </application>
 
 </manifest>

@@ -17,6 +17,8 @@ import com.ashokvarma.bottomnavigation.TextBadgeItem;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import team.wucaipintu.pinyipin.R;
 import team.wucaipintu.pinyipin.ui.adapter.ViewPaperAdapter;
 import team.wucaipintu.pinyipin.ui.fragment.ContactFragment;
@@ -25,11 +27,18 @@ import team.wucaipintu.pinyipin.ui.fragment.HomeFragment;
 import team.wucaipintu.pinyipin.ui.fragment.UserFragment;
 
 public class MainActivity extends AppCompatActivity {
-    private BottomNavigationBar bottomNavigationBar;
-    private ViewPager viewPager;
+    @BindView(R.id.main_buttom)
+    BottomNavigationBar bottomNavigationBar;
+
+    @BindView(R.id.view_paper)
+    ViewPager viewPager;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private ArrayList<Fragment> fragmentArrayList;
     private FragmentManager fragmentManager;
-    private Toolbar toolbar;
+
     private TextBadgeItem textBadgeItem_message;
     private int userId=-1;
     private String nikeName;
@@ -41,12 +50,13 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        ButterKnife.bind(this);
 
         fragmentManager = getSupportFragmentManager();
         fragmentArrayList = new ArrayList<>();
-        bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.main_buttom);
-        viewPager = (ViewPager) findViewById(R.id.view_paper);
-        toolbar = (Toolbar) findViewById(R.id.toolbar);
+        //bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.main_buttom);
+       // viewPager = (ViewPager) findViewById(R.id.view_paper);
+        //toolbar = (Toolbar) findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
         Intent intent=getIntent();
@@ -81,10 +91,17 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.action_search:
-                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
-                startActivity(intent);
+                Intent intent0 = new Intent(MainActivity.this, SearchContactActivity.class);
+                startActivity(intent0);
                 break;
-            //case R.id.actio_add:break;
+            case R.id.action_add_friend:
+                Intent intent1=new Intent(MainActivity.this,SearchContactActivity.class);
+                startActivity(intent1);
+                break;
+            case R.id.action_add_group:
+                Intent intent2=new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent2);
+                break;
         }
         return super.onOptionsItemSelected(item);
     }
