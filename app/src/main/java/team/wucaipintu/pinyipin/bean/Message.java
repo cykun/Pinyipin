@@ -7,10 +7,10 @@ import java.util.Date;
 public class Message implements IMessage {
     private String id;
     private String text;
-    private Author author;
+    private User author;
     private Date createdAt;
 
-    public Message(String id,String text,Author author,Date createAt){
+    public Message(String id, String text, User author, Date createAt){
         this.id=id;
         this.text=text;
         this.author=author;
@@ -28,7 +28,7 @@ public class Message implements IMessage {
     }
 
     @Override
-    public Author getUser() {
+    public User getUser() {
         return author;
     }
 

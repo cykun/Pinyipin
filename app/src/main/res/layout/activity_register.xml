@@ -6,30 +6,10 @@
     android:layout_height="match_parent"
     android:background="#fff"
     android:orientation="vertical"
-    android:paddingLeft="30dp"
-    android:paddingRight="30dp"
     tools:context=".ui.activity.RegisterActivity">
-
-    <LinearLayout
+    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <ImageView
-            android:layout_width="58dp"
-            android:layout_height="58dp"
-            android:src="@mipmap/ic_launcher" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="15dp"
-            android:text="@string/app_name"
-            android:textColor="#000"
-            android:textSize="22sp" />
-    </LinearLayout>
+        android:layout_height="?actionBarSize"/>
 
     <ScrollView
         android:layout_marginTop="25dp"
@@ -37,6 +17,8 @@
         android:layout_height="match_parent">
 
         <LinearLayout
+            android:paddingLeft="30dp"
+            android:paddingRight="30dp"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">

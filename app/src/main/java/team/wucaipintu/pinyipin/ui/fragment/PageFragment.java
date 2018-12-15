@@ -36,7 +36,7 @@ import team.wucaipintu.pinyipin.ui.activity.PostDetailActivity;
 import team.wucaipintu.pinyipin.ui.adapter.PostAdapter;
 
 public class PageFragment extends Fragment {
-    private List<PostItem> postItemList;
+    private List<PostItem> postItemList=new ArrayList<>();
     private RecyclerView recyclerView;
     private TwinklingRefreshLayout refreshLayout;
     private PostAdapter postAdapter;
@@ -44,6 +44,7 @@ public class PageFragment extends Fragment {
     private int userId;
     private String nikeName;
     private boolean isFirstLoad = true;
+    private boolean isInitView=false;
 
     public static PageFragment getInstance(String type,int userId,String nikeName) {
         PageFragment pageFragment = new PageFragment();
@@ -56,6 +57,10 @@ public class PageFragment extends Fragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
+        if(getUserVisibleHint() && isFirstLoad && isInitView){
+            refreshLayout.startRefresh();
+            isFirstLoad=false;
+        }
     }
 
     @Override
@@ -84,12 +89,12 @@ public class PageFragment extends Fragment {
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+        isInitView=true;
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
         recyclerView.addItemDecoration(new SpacesItemDecoration(16));
         recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getActivity(), recyclerView, new RecyclerItemClickListener.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
-                //Toast.makeText(getActivity(),"hhahaha"+postItemList.get(position).getPostId(),Toast.LENGTH_SHORT).show();
                 Intent intent = new Intent(getActivity(), PostDetailActivity.class);
                 intent.putExtra("postId",postItemList.get(position).getPostId());
                 intent.putExtra("userId",userId);
@@ -102,21 +107,28 @@ public class PageFragment extends Fragment {
 
             }
         }));
-        if (isFirstLoad) {
-            postItemList = new ArrayList<>();
-            if (type.equals("推荐")) {
-                loadDataFromDataBase();
-            }
-            isFirstLoad = false;
-        }
+//        if (isFirstLoad) {
+////            postItemList = new ArrayList<>();
+////            if (type.equals("推荐")) {
+////                loadDataFromDataBase();
+////            }
+////            isFirstLoad = false;
+////        }
         initListener();
         postAdapter = new PostAdapter(postItemList);
         recyclerView.setAdapter(postAdapter);
+        if(getUserVisibleHint() && isFirstLoad && isInitView){
+            refreshLayout.startRefresh();
+            isFirstLoad=false;
+        }
     }
 
     @Override
     public void onStart() {
         super.onStart();
+//        if(isVisibleToUser && isFirstLoad && isInitView){
+//            refreshLayout.startRefresh();
+//        }
     }
 
     //设置监听

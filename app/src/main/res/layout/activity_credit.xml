@@ -3,10 +3,78 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#eee"
+    android:gravity="center_horizontal"
+    android:orientation="vertical"
     tools:context=".ui.activity.CreditActivity">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
         android:layout_width="match_parent"
         android:layout_height="?actionBarSize" />
+
+    <View
+        android:layout_width="260dp"
+        android:layout_height="1sp"
+        android:layout_marginTop="20dp"
+        android:background="#0ee" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="拼一拼信用卡"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="260dp"
+        android:layout_height="1sp"
+        android:layout_marginTop="14dp"
+        android:background="#0ee" />
+
+    <TextView
+        android:id="@+id/name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="郑西坤"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <LinearLayout
+        android:layout_width="320dp"
+        android:layout_height="220dp"
+        android:layout_marginTop="26dp"
+        android:background="@drawable/radius_layout_bg"
+        android:elevation="2dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="151dp" />
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/credit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginLeft="18dp"
+                android:text="620"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/datatime"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|right"
+                android:layout_marginBottom="12dp"
+                android:layout_marginRight="6dp"
+                android:text="2018/12/3 23:24" />
+        </FrameLayout>
+    </LinearLayout>
 </LinearLayout>

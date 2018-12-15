@@ -14,11 +14,11 @@ import java.util.Date;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import team.wucaipintu.pinyipin.R;
-import team.wucaipintu.pinyipin.bean.Author;
+import team.wucaipintu.pinyipin.bean.User;
 import team.wucaipintu.pinyipin.bean.Message;
 
 public class ChatRoomActivity extends AppCompatActivity implements
-        MessageInput.InputListener, MessageInput.AttachmentsListener, MessageInput.TypingListener, MessagesListAdapter.OnLoadMoreListener {
+        MessageInput.InputListener, MessagesListAdapter.OnLoadMoreListener {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
@@ -48,11 +48,9 @@ public class ChatRoomActivity extends AppCompatActivity implements
         });
 
         adapter=new MessagesListAdapter<>("1",null);
-        //adapter.setLoadMoreListener(this);
+        adapter.setLoadMoreListener(this);
         messagesList.setAdapter(adapter);
-        //messageInput.setAttachmentsListener(this);
         messageInput.setInputListener(this);
-        //messageInput.setTypingListener(this);
     }
 
     @Override
@@ -70,21 +68,8 @@ public class ChatRoomActivity extends AppCompatActivity implements
     }
 
     public boolean onSubmit(CharSequence input) {
-        adapter.addToStart(new Message("1",input.toString(),new Author("1","123","123"),new Date()), true);
+        adapter.addToStart(new Message("1",input.toString(),new User("1","123","123"),new Date()), true);
         return true;
     }
 
-    @Override
-    public void onAddAttachments() {
-    }
-
-    @Override
-    public void onStartTyping() {
-
-    }
-
-    @Override
-    public void onStopTyping() {
-
-    }
 }

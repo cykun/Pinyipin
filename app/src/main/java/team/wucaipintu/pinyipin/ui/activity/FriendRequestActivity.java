@@ -11,22 +11,28 @@ import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import team.wucaipintu.pinyipin.R;
 import team.wucaipintu.pinyipin.bean.NewFriendRequest;
 import team.wucaipintu.pinyipin.ui.adapter.FriendRequestAdapter;
 
 public class FriendRequestActivity extends AppCompatActivity {
 
-    private RecyclerView newfriendRV;
-    private Toolbar toolbar;
+    @BindView(R.id.rv_newfriend)
+    RecyclerView newfriendRV;
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     private List<NewFriendRequest> requests;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friendrequest);
+        ButterKnife.bind(this);
 
-        toolbar=(Toolbar)findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -38,8 +44,6 @@ public class FriendRequestActivity extends AppCompatActivity {
         });
 
         initData();
-
-        newfriendRV=(RecyclerView)findViewById(R.id.rv_newfriend);
         newfriendRV.setLayoutManager(new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false));
         newfriendRV.addItemDecoration(new DividerItemDecoration(this,DividerItemDecoration.VERTICAL));
         newfriendRV.setAdapter(new FriendRequestAdapter(requests));

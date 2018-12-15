@@ -12,11 +12,11 @@ import android.widget.LinearLayout;
 
 import team.wucaipintu.pinyipin.R;
 import team.wucaipintu.pinyipin.ui.activity.CreditActivity;
+import team.wucaipintu.pinyipin.ui.activity.MyPostActivity;
 import team.wucaipintu.pinyipin.ui.activity.SettingActivity;
 import team.wucaipintu.pinyipin.ui.activity.UserInfoActivity;
 
 public class UserFragment extends Fragment {
-    private String TAG = UserFragment.class.getSimpleName();
     private LinearLayout userLL;
     private LinearLayout creditLL;
     private LinearLayout postLL;
@@ -76,7 +76,7 @@ public class UserFragment extends Fragment {
         postLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(),CreditActivity.class);
+                Intent intent=new Intent(getActivity(),MyPostActivity.class);
                 startActivity(intent);
             }
         });

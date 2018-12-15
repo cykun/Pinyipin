@@ -66,8 +66,10 @@
             android:name=".ui.activity.ChatRoomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ui.activity.MyPostActivity" />
-        <activity android:name=".ui.activity.SearchContactActivity"
-            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity
+            android:name=".ui.activity.SearchContactActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.ContactAddActivity"></activity>
     </application>
 
 </manifest>
