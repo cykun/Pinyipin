@@ -20,7 +20,8 @@
         custom:ddIndicatorHeight="6dp"
         custom:tabGravity="fill"
         custom:tabMaxWidth="0dp"
-        custom:tabMode="fixed" />
+        custom:tabMode="fixed"
+        />
 
     <android.support.v4.view.ViewPager
         android:id="@+id/post_viewpager"

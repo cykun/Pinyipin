@@ -65,11 +65,16 @@
         <activity
             android:name=".ui.activity.ChatRoomActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.MyPostActivity" />
+        <activity android:name=".ui.activity.MyPostActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <activity
             android:name=".ui.activity.SearchContactActivity"
             android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".ui.activity.ContactAddActivity"></activity>
+        <activity
+            android:name=".ui.activity.ContactAddActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ui.activity.GroupAddActivity"
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

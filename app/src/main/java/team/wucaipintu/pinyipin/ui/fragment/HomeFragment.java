@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.kekstudio.dachshundtablayout.DachshundTabLayout;
+import com.kekstudio.dachshundtablayout.indicators.LineFadeIndicator;
 
 import team.wucaipintu.pinyipin.R;
 import team.wucaipintu.pinyipin.ui.activity.PostReleaseActivity;

@@ -1,6 +1,7 @@
 package team.wucaipintu.pinyipin.ui.activity;
 
 import android.content.Intent;
+import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
@@ -10,6 +11,9 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -50,14 +54,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        ButterKnife.bind(this);
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            Window window = getWindow();
+            View decorView = window.getDecorView();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); //可有可无
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
 
+        ButterKnife.bind(this);
         fragmentManager = getSupportFragmentManager();
         fragmentArrayList = new ArrayList<>();
-        //bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.main_buttom);
-       // viewPager = (ViewPager) findViewById(R.id.view_paper);
-        //toolbar = (Toolbar) findViewById(R.id.toolbar);
-
         setSupportActionBar(toolbar);
         Intent intent=getIntent();
         if(userId==-1){
@@ -167,5 +173,4 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
-
 }

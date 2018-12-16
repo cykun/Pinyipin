@@ -14,9 +14,6 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-
-
-
     <style name="AppTheme.NoActionBar">
         <item name="colorPrimary">#000</item>
         <item name="colorPrimaryDark">#fff</item>

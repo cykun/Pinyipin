@@ -85,7 +85,10 @@ public class SearchContactActivity extends AppCompatActivity implements View.OnC
             }
             break;
             case R.id.search_group: {
-
+                Intent intent=new Intent(SearchContactActivity.this,GroupAddActivity.class);
+                intent.putExtra("groupId","");
+                intent.putExtra("phoneNumber","");
+                startActivity(intent);
             }
             break;
         }
