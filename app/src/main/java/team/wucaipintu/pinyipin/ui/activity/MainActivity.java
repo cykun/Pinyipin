@@ -97,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.action_search:
-                Intent intent0 = new Intent(MainActivity.this, SearchContactActivity.class);
+                Intent intent0 = new Intent(MainActivity.this, SearchActivity.class);
                 startActivity(intent0);
                 break;
             case R.id.action_add_friend:
@@ -105,8 +105,8 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
                 break;
             case R.id.action_add_group:
-                Intent intent2=new Intent(MainActivity.this,SearchActivity.class);
-                startActivity(intent2);
+                Intent intent3 = new Intent(MainActivity.this, SearchContactActivity.class);
+                startActivity(intent3);
                 break;
         }
         return super.onOptionsItemSelected(item);
@@ -142,8 +142,8 @@ public class MainActivity extends AppCompatActivity {
     /* 初始化底部导航栏 */
     public void initBottomNavigationBar() {
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
-        bottomNavigationBar.setActiveColor("#2828FF")
-                .setInActiveColor("#272727");
+        bottomNavigationBar.setActiveColor("#4A4AFF")
+                .setInActiveColor("#8E8E8E");
         textBadgeItem_message = new TextBadgeItem();
         textBadgeItem_message.setBorderWidth(2).setBackgroundColor("#FF0000")
                 .setBorderColor("#FF0000")

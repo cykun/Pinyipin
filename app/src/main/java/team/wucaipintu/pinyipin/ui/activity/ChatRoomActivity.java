@@ -42,7 +42,6 @@ public class ChatRoomActivity extends AppCompatActivity implements
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                messageInput.onFocusChange(toolbar,true);
                 finish();
             }
         });
@@ -69,6 +68,7 @@ public class ChatRoomActivity extends AppCompatActivity implements
 
     public boolean onSubmit(CharSequence input) {
         adapter.addToStart(new Message("1",input.toString(),new User("1","123","123"),new Date()), true);
+        adapter.addToStart(new Message("2","hahah",new User("2","hah","2"),new Date()),true);
         return true;
     }
 
