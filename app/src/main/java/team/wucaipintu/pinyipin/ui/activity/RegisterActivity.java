@@ -2,7 +2,6 @@ package team.wucaipintu.pinyipin.ui.activity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.os.Handler;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,12 +10,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioButton;
-import android.widget.Toast;
-
-import com.google.gson.JsonObject;
 
 import java.io.IOException;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -27,15 +25,32 @@ import team.wucaipintu.pinyipin.R;
 import team.wucaipintu.pinyipin.util.JsonUtil;
 
 public class RegisterActivity extends AppCompatActivity {
-    private EditText phoneNumberET;
-    private EditText passwordET;
-    private EditText nameET;
-    private RadioButton boyRB;
-    private RadioButton girlRB;
-    private EditText ageET;
-    private EditText nikenameET;
-    private EditText regionET;
-    private Button registerBT;
+    @BindView(R.id.editText_phoneNumber)
+    EditText phoneNumberET;
+
+    @BindView(R.id.editText_password)
+    EditText passwordET;
+
+    @BindView(R.id.editText_name)
+    EditText nameET;
+
+    @BindView(R.id.radioButton_boy)
+    RadioButton boyRB;
+
+    @BindView(R.id.radioButton_gril)
+    RadioButton girlRB;
+
+    @BindView(R.id.editText_age)
+    EditText ageET;
+
+    @BindView(R.id.editText_nikename)
+    EditText nikenameET;
+
+    @BindView(R.id.editText_region)
+    EditText regionET;
+
+    @BindView(R.id.button_register)
+    Button registerBT;
 
     private OkHttpClient client;
 
@@ -43,20 +58,14 @@ public class RegisterActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_register);
-        phoneNumberET = (EditText) findViewById(R.id.editText_phoneNumber);
-        passwordET = (EditText) findViewById(R.id.editText_password);
-        nameET = (EditText) findViewById(R.id.editText_name);
-        boyRB = (RadioButton) findViewById(R.id.radioButton_boy);
-        girlRB = (RadioButton) findViewById(R.id.radioButton_gril);
-        ageET = (EditText) findViewById(R.id.editText_age);
-        nikenameET = (EditText) findViewById(R.id.editText_nikename);
-        regionET = (EditText) findViewById(R.id.editText_region);
-        registerBT = (Button) findViewById(R.id.button_register);
-
-        client=new OkHttpClient();
+        ButterKnife.bind(this);
+        client = new OkHttpClient();
         initListener();
     }
 
+    /**
+     * 设置监听器
+     */
     public void initListener() {
         registerBT.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,11 +127,11 @@ public class RegisterActivity extends AppCompatActivity {
                     .add("nikeName", nikeName)
                     .add("age", age)
                     .add("sex", sex)
-                    .add("region", region)
+                    .add("address", region)
                     .build();
             Request request = new Request.Builder()
                     .post(formBody)
-                    .url("http://39.108.37.77:8080/pinyipin/user/register")
+                    .url("http://39.108.37.77:8080/pinyipin1/user/register")
                     .build();
             client.newCall(request).enqueue(new Callback() {
                 @Override
@@ -137,7 +146,7 @@ public class RegisterActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
                     String data = response.body().string();
-                    int code=JsonUtil.getValue(data,"code");
+                    int code = JsonUtil.getValue(data, "code");
                     if (code == 0) {
                         AlertDialog.Builder builder = new AlertDialog.Builder(RegisterActivity.this);
                         builder.setTitle("错误");

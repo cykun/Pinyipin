@@ -8,6 +8,7 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -36,6 +37,7 @@ public class MyPostActivity extends AppCompatActivity {
         setContentView(R.layout.activity_mypost);
         ButterKnife.bind(this);
         Intent intent=getIntent();
+        postItemList=new ArrayList<>();
         phoneNumber=intent.getStringExtra("phoneNumber");
 
         setSupportActionBar(toolbar);

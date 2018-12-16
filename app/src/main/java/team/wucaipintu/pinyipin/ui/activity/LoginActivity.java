@@ -98,7 +98,7 @@ public class LoginActivity extends AppCompatActivity {
                     .build();
             Request request = new Request.Builder()
                     .post(formBody)
-                    .url("http://39.108.37.77:8080/pinyipin/user/login")
+                    .url("http://39.108.37.77:8080/pinyipin1/user/login")
                     .build();
             okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
@@ -127,16 +127,17 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("phoneNumber", phoneNumber);
-                        editor.putInt("userId",object.get("userId").getAsInt());
+                        //editor.putInt("userId",object.get("userId").getAsInt());
                         editor.putString("name",object.get("name").getAsString());
                         editor.putString("nikeName",object.get("nikeName").getAsString());
-                        editor.putString("region",object.get("region").getAsString());
+                        editor.putString("region",object.get("address").getAsString());
                         editor.putString("sex",object.get("sex").getAsString());
                         editor.putInt("age",object.get("age").getAsInt());
                         editor.commit();
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         //intent.putExtra("phoneNumber",phoneNumber );
-                        intent.putExtra("userId",object.get("userId").getAsInt());
+                        //intent.putExtra("userId",object.get("userId").getAsInt());
+                        intent.putExtra("phoneNumber",phoneNumber);
                         intent.putExtra("nikeName",object.get("nikeName").getAsString());
                         startActivity(intent);
                         finish();
