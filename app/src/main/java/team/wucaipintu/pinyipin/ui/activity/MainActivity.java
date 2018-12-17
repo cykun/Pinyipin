@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import team.wucaipintu.pinyipin.R;
+import team.wucaipintu.pinyipin.bean.User;
 import team.wucaipintu.pinyipin.ui.adapter.ViewPaperAdapter;
 import team.wucaipintu.pinyipin.ui.fragment.ContactFragment;
 import team.wucaipintu.pinyipin.ui.fragment.DialogFragment;
@@ -118,7 +119,8 @@ public class MainActivity extends AppCompatActivity {
         fragmentArrayList.add(HomeFragment.getInstance(userId,nikeName));
         fragmentArrayList.add(new DialogFragment());
         fragmentArrayList.add(ContactFragment.getInstance(userId));
-        fragmentArrayList.add(new UserFragment());
+        //fragmentArrayList.add(new UserFragment());
+        fragmentArrayList.add(UserFragment.getInstance());
         ViewPaperAdapter fragmentPagerAdapter = new ViewPaperAdapter(fragmentManager, fragmentArrayList);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
