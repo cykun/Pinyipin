@@ -1,21 +1,20 @@
 package team.wucaipintu.pinyipin.ui.activity;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.os.Build;
+import android.net.Uri;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.ashokvarma.bottomnavigation.BottomNavigationBar;
 import com.ashokvarma.bottomnavigation.BottomNavigationItem;
@@ -25,12 +24,17 @@ import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import io.rong.imkit.RongIM;
+import io.rong.imkit.fragment.ConversationListFragment;
+import io.rong.imlib.RongIMClient;
+import io.rong.imlib.model.Conversation;
 import team.wucaipintu.pinyipin.R;
 import team.wucaipintu.pinyipin.ui.adapter.ViewPaperAdapter;
 import team.wucaipintu.pinyipin.ui.fragment.ContactFragment;
 import team.wucaipintu.pinyipin.ui.fragment.DialogFragment;
 import team.wucaipintu.pinyipin.ui.fragment.HomeFragment;
 import team.wucaipintu.pinyipin.ui.fragment.UserFragment;
+
 
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.main_buttom)
@@ -42,36 +46,76 @@ public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
 
+    @BindView(R.id.button)
+    Button button;
+
     private ArrayList<Fragment> fragmentArrayList;
     private FragmentManager fragmentManager;
 
     private TextBadgeItem textBadgeItem_message;
-
-    private String phoneNumber;
+    private int userId=-1;
     private String nikeName;
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
     }
-
+    private Fragment mConversationList;
+    private Fragment mConversationFragment=null;
+    protected static  final String TAG="MainActivity";
+    private  static final String token1="Goxa1taM647d0pX1ufRT/m1hqL6r7qk/o4G0nEAeWPVZRaKAmBq0S37aB2d+calUXPTte5tU2me8Oj6RC3sKrw==";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
-            Window window = getWindow();
-            View decorView = window.getDecorView();
-            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); //可有可无
-            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-        }
 
+        //connectRongServer(token1);
         ButterKnife.bind(this);
+        RongIM.init(this);
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                RongIM.getInstance().startPrivateChat(MainActivity.this, "333", "菠萝三号");
+            }
+        });
         fragmentManager = getSupportFragmentManager();
         fragmentArrayList = new ArrayList<>();
+        //bottomNavigationBar = (BottomNavigationBar) findViewById(R.id.main_buttom);
+       // viewPager = (ViewPager) findViewById(R.id.view_paper);
+        //toolbar = (Toolbar) findViewById(R.id.toolbar);
+
         setSupportActionBar(toolbar);
-        SharedPreferences preferences=getSharedPreferences("user",Context.MODE_PRIVATE);
-        phoneNumber=preferences.getString("phoneNumber","");
-        nikeName=preferences.getString("nikeName","");
+        Intent intent=getIntent();
+        if(userId==-1){
+            userId=intent.getIntExtra("userId",0);
+        }
+        if(nikeName==null){
+            nikeName=intent.getStringExtra("nikeName");
+        }
         initView();
+    }
+
+    private void connectRongServer(String token){
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                Log.e(TAG,"token is error , please check token and appkey");
+                Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onSuccess(String s) {
+
+                    //mUser1.setText("用户1连接服务器成功");
+                    Log.e(TAG,"onSuccess :"+s);
+                    Toast.makeText(MainActivity.this, "connect server success 菠萝一号", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e(TAG,"connect failure errorCode is :"+errorCode.getValue());
+                Toast.makeText(MainActivity.this, "error", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     protected void onRestoreInstanceState(Bundle savedInstanceState){
@@ -96,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item){
         switch (item.getItemId()){
             case R.id.action_search:
-                Intent intent0 = new Intent(MainActivity.this, SearchActivity.class);
+                Intent intent0 = new Intent(MainActivity.this, SearchContactActivity.class);
                 startActivity(intent0);
                 break;
             case R.id.action_add_friend:
@@ -104,21 +148,40 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent1);
                 break;
             case R.id.action_add_group:
-                Intent intent3 = new Intent(MainActivity.this, SearchContactActivity.class);
-                startActivity(intent3);
+                Intent intent2=new Intent(MainActivity.this,SearchActivity.class);
+                startActivity(intent2);
                 break;
         }
         return super.onOptionsItemSelected(item);
     }
 
+    private  Fragment initConversationList(){
+        if(mConversationFragment==null){
+            ConversationListFragment listFragment=new ConversationListFragment();
+            Uri uri=Uri.parse("rong://"+getApplicationInfo().packageName).buildUpon()
+                    .appendPath("conversationlist")
+                    .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(),"false")//设置私聊会话是否聚合显示
+                    .appendQueryParameter(Conversation.ConversationType.GROUP.getName(),"false")
+                    .appendQueryParameter(Conversation.ConversationType.DISCUSSION.getName(),"false")//设置私聊会话是否聚合显示
+                    .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(),"false")//设置私聊会话是否聚合显示
+                    .build();
+            listFragment.setUri(uri);
+            return listFragment;
+        }else{
+            return mConversationFragment;
+        }
+    };
+
     /* 初始化viewpaper */
     public void initViewPaper() {
+        mConversationList=initConversationList();//获取会话列表的对象
+
         viewPager.setOffscreenPageLimit(3);
-        fragmentArrayList.add(HomeFragment.getInstance());
-        fragmentArrayList.add(DialogFragment.getInstance(phoneNumber,nikeName));
-        fragmentArrayList.add(ContactFragment.getInstance(phoneNumber,nikeName));
-        //fragmentArrayList.add(new UserFragment());
-        fragmentArrayList.add(UserFragment.getInstance(phoneNumber,nikeName));
+        fragmentArrayList.add(HomeFragment.getInstance(userId,nikeName));
+        //fragmentArrayList.add(new DialogFragment());//会话列表
+        fragmentArrayList.add(mConversationList);
+        fragmentArrayList.add(ContactFragment.getInstance(userId));
+        fragmentArrayList.add(new UserFragment());
         ViewPaperAdapter fragmentPagerAdapter = new ViewPaperAdapter(fragmentManager, fragmentArrayList);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);
@@ -142,8 +205,8 @@ public class MainActivity extends AppCompatActivity {
     /* 初始化底部导航栏 */
     public void initBottomNavigationBar() {
         bottomNavigationBar.setMode(BottomNavigationBar.MODE_FIXED);
-        bottomNavigationBar.setActiveColor("#4A4AFF")
-                .setInActiveColor("#8E8E8E");
+        bottomNavigationBar.setActiveColor("#2828FF")
+                .setInActiveColor("#272727");
         textBadgeItem_message = new TextBadgeItem();
         textBadgeItem_message.setBorderWidth(2).setBackgroundColor("#FF0000")
                 .setBorderColor("#FF0000")
@@ -173,4 +236,5 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
 }

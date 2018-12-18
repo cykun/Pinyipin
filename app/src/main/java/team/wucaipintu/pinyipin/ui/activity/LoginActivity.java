@@ -8,16 +8,20 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 
 import java.io.IOException;
 
+import io.rong.imkit.RongIM;
+import io.rong.imlib.RongIMClient;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.FormBody;
@@ -32,8 +36,10 @@ public class LoginActivity extends AppCompatActivity {
     private TextView forgetPasswordTV;
     private TextView registerTV;
     private Button loginB;
-
+    protected static  final String TAG="LoginActivity";
     private OkHttpClient okHttpClient;
+
+    private  static final String token1="vahxbUCQ41oszRTPUPtNR+ts5uTqc8KG1qDwl25eOByXB3xTOCUD1qX3AzA8d1YUeLUmfrtOVaHM+CPtv1YZ0g==";//融云服务器的token
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -80,6 +86,29 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
+    private void connectRongServer(String token){//连接的融云服务器的接口
+        RongIM.connect(token, new RongIMClient.ConnectCallback() {
+            @Override
+            public void onTokenIncorrect() {
+                Log.e(TAG,"token is error , please check token and appkey");
+            }
+
+            @Override
+            public void onSuccess(String s) {
+                if(s.equals("111")){
+                    //mUser1.setText("用户1连接服务器成功");
+                    Log.e(TAG,"onSuccess :"+s);
+                    Toast.makeText(LoginActivity.this, "connect server success 菠萝一号", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                Log.e(TAG,"connect failure errorCode is :"+errorCode.getValue());
+            }
+        });
+    }
+
     private class PostThread extends Thread {
 
         private String phoneNumber;
@@ -98,7 +127,7 @@ public class LoginActivity extends AppCompatActivity {
                     .build();
             Request request = new Request.Builder()
                     .post(formBody)
-                    .url("http://39.108.37.77:8080/pinyipin1/user/login")
+                    .url("http://39.108.37.77:8080/pinyipin/user/login")
                     .build();
             okHttpClient.newCall(request).enqueue(new Callback() {
                 @Override
@@ -127,16 +156,19 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("phoneNumber", phoneNumber);
+                        editor.putInt("userId",object.get("userId").getAsInt());
                         editor.putString("name",object.get("name").getAsString());
                         editor.putString("nikeName",object.get("nikeName").getAsString());
-                        editor.putString("address",object.get("address").getAsString());
+                        editor.putString("region",object.get("region").getAsString());
                         editor.putString("sex",object.get("sex").getAsString());
                         editor.putInt("age",object.get("age").getAsInt());
                         editor.commit();
+
+                        connectRongServer(token1);//连接融云服务器
+
                         Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                         //intent.putExtra("phoneNumber",phoneNumber );
-                        //intent.putExtra("userId",object.get("userId").getAsInt());
-                        intent.putExtra("phoneNumber",phoneNumber);
+                        intent.putExtra("userId",object.get("userId").getAsInt());
                         intent.putExtra("nikeName",object.get("nikeName").getAsString());
                         startActivity(intent);
                         finish();
