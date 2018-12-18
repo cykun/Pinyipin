@@ -1,6 +1,8 @@
 package team.wucaipintu.pinyipin.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -38,7 +40,7 @@ public class PostReleaseActivity extends AppCompatActivity {
     public EditText titleET;
 
     @BindView(R.id.et_content)
-     public EditText  contentET;
+    public EditText contentET;
 
     @BindView(R.id.et_deadline)
     public EditText deadlineET;
@@ -55,25 +57,30 @@ public class PostReleaseActivity extends AppCompatActivity {
     @BindView(R.id.et_group)
     public EditText groupET;
 
-    private String userId;
+    private String phoneNumber;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
-        Intent intent=getIntent();
-        userId=String.valueOf(intent.getIntExtra("userId",0));
+        //Intent intent=getIntent();
+        //userId=String.valueOf(intent.getIntExtra("userId",0));
+        SharedPreferences sharedPreferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        phoneNumber = sharedPreferences.getString("phoneNumber", "");
         ButterKnife.bind(this);
 
         setSupportActionBar(toolbar);
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setHomeButtonEnabled(true);
+
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
             }
         });
-        okHttpClient=new OkHttpClient();
+        okHttpClient = new OkHttpClient();
     }
 
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -84,9 +91,9 @@ public class PostReleaseActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_send:
-                if(titleET.getText().toString().equals("") || contentET.getText().toString().equals("")){
+                if (titleET.getText().toString().equals("") || contentET.getText().toString().equals("")) {
 
-                }else {
+                } else {
                     post();
                 }
                 break;
@@ -95,20 +102,20 @@ public class PostReleaseActivity extends AppCompatActivity {
     }
 
     //发起post请求
-    private void post(){
-        FormBody formBody=new FormBody.Builder()
-                .add("title",titleET.getText().toString())
-                .add("content",contentET.getText().toString())
-                .add("dealline",deadlineET.getText().toString())
-                .add("groupName",groupET.getText().toString())
-                .add("population",populationET.getText().toString())
-                .add("location",locationET.getText().toString())
-                .add("needNum",neednumEt.getText().toString())
-                .add("userId",userId)
-                .add("type",(String)typeS.getSelectedItem())
+    private void post() {
+        FormBody formBody = new FormBody.Builder()
+                .add("title", titleET.getText().toString())
+                .add("content", contentET.getText().toString())
+                .add("dealline", deadlineET.getText().toString())
+                .add("groupName", groupET.getText().toString())
+                .add("population", populationET.getText().toString())
+                .add("location", locationET.getText().toString())
+                .add("needNum", neednumEt.getText().toString())
+                .add("phoneNumber", phoneNumber)
+                .add("type", (String) typeS.getSelectedItem())
                 .build();
-        Request request=new Request.Builder()
-                .url("http://39.108.37.77:8080/pinyipin/post/add")
+        Request request = new Request.Builder()
+                .url("http://39.108.37.77:8080/pinyipin1/post/add")
                 .post(formBody)
                 .build();
         okHttpClient.newCall(request).enqueue(new Callback() {
@@ -119,20 +126,20 @@ public class PostReleaseActivity extends AppCompatActivity {
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String bodyData=response.body().string();
-                int code=JsonUtil.getValue(bodyData,"code");
-                if(code==1){
+                String bodyData = response.body().string();
+                int code = JsonUtil.getValue(bodyData, "code");
+                if (code == 1) {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showDialog("提示","发布成功");
+                            showDialog("提示", "发布成功");
                         }
                     });
-                }else {
+                } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            showDialog("提示","发布失败");
+                            showDialog("提示", "发布失败");
                         }
                     });
                 }
@@ -140,11 +147,11 @@ public class PostReleaseActivity extends AppCompatActivity {
         });
     }
 
-    public void showDialog(String title,String msg){
-        AlertDialog.Builder builder=new AlertDialog.Builder(PostReleaseActivity.this);
+    public void showDialog(String title, String msg) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(PostReleaseActivity.this);
         builder.setTitle(title);
         builder.setMessage(msg);
-        builder.setPositiveButton("好",null);
+        builder.setPositiveButton("好", null);
         builder.show();
     }
 

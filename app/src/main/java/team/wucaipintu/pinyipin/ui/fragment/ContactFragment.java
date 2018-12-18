@@ -40,12 +40,14 @@ public class ContactFragment extends Fragment {
     private LinearLayout groupLL;
     private LinearLayout newfriendLL;
     private boolean isFirstLoad = true;
-    private int userId;
+    private String phoneNumber;
+    private String nikeName;
     private ContactAdapter contactAdapter;
 
-    public static ContactFragment getInstance(int userId) {
+    public static ContactFragment getInstance(String phoneNumber,String nikeName) {
         ContactFragment fragment = new ContactFragment();
-        fragment.userId = userId;
+        fragment.phoneNumber=phoneNumber;
+        fragment.nikeName=nikeName;
         return fragment;
     }
 
@@ -73,7 +75,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent=new Intent(getActivity(),ChatRoomActivity.class);
-                intent.putExtra("userId",userId);
+                intent.putExtra("phoneNumber",phoneNumber);
                 startActivity(intent);
             }
 
@@ -96,7 +98,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(getActivity(), GroupActivity.class);
-                intent.putExtra("userId",userId);
+                intent.putExtra("phoneNumber",phoneNumber);
                 startActivity(intent);
             }
         });
@@ -115,7 +117,7 @@ public class ContactFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://39.108.37.77:8080/pinyipin/friend/list");
+                    URL url = new URL("http://39.108.37.77:8080/pinyipin1/friend/list");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoOutput(true);
                     httpURLConnection.setDoInput(true);
@@ -124,7 +126,7 @@ public class ContactFragment extends Fragment {
                     httpURLConnection.setRequestProperty("user-agent",
                             "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
                     httpURLConnection.setRequestProperty("connection", "Keep-Alive");
-                    String param = "userId=" + userId;
+                    String param = "phoneNumber=" + phoneNumber;
                     httpURLConnection.connect();
                     PrintWriter writer = new PrintWriter(httpURLConnection.getOutputStream());
                     writer.print(param);
@@ -156,11 +158,4 @@ public class ContactFragment extends Fragment {
         }).start();
     }
 
-//    public void initData(){
-//        contacts=new ArrayList<>();
-//        Contact contact=new Contact(R.drawable.name,"郑西坤");
-//        for(int i=0;i<12;i++){
-//            contacts.add(contact);
-//        }
-//    }
 }

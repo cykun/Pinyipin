@@ -3,9 +3,9 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#fff"
     android:fitsSystemWindows="true"
     android:orientation="vertical"
-    android:background="#fff"
     tools:context=".ui.activity.PostDetailActivity">
 
     <android.support.v7.widget.Toolbar
@@ -26,7 +26,9 @@
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/toolbar_shadow">
+        android:layout_below="@id/toolbar_shadow"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="0dp">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -54,7 +56,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="标题"
-                android:textSize="22sp" />
+                android:textSize="24sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -90,9 +92,9 @@
                 android:id="@+id/content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="18dp"
+                android:layout_marginTop="20dp"
                 android:text="这是一个内容，你可以在这里写东西"
-                android:textSize="16sp" />
+                android:textSize="18sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -103,47 +105,49 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="目标人群："
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/population"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="需求人数："
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/neednum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp">
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="当前以加入人数："
-                    android:textSize="12sp" />
+                    android:text="当前加入人数："
+                    android:textSize="14sp" />
 
                 <TextView
                     android:id="@+id/nownum"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12sp" />
+                    android:textSize="14sp" />
             </LinearLayout>
 
             <Button
@@ -155,7 +159,7 @@
                 android:text="点击加入"
                 android:textColor="#fff" />
 
-            <LinearLayout
+            <RelativeLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="20dp">
@@ -172,35 +176,83 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="6dp"
+                    android:layout_toRightOf="@id/tv_comment"
                     android:text="0"
                     android:textSize="12dp" />
 
-                <TextView
+                <ImageButton
+                    android:id="@+id/ib_like"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="16dp"
-                    android:text="赞"
-                    android:textSize="14sp" />
+                    android:layout_marginRight="12dp"
+                    android:layout_toLeftOf="@id/tv_like_num"
+                    android:src="@drawable/like"
+                    android:background="@null"
+                    />
+                <!--<ImageView-->
+                    <!--android:id="@+id/iv_like"-->
+                    <!--android:layout_width="wrap_content"-->
+                    <!--android:layout_height="wrap_content"-->
+                    <!--android:layout_marginRight="12dp"-->
+                    <!--android:layout_toLeftOf="@id/tv_like_num"-->
+                    <!--android:src="@drawable/like" />-->
 
                 <TextView
                     android:id="@+id/tv_like_num"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="6dp"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginRight="8dp"
                     android:text="0"
                     android:textSize="12dp" />
+            </RelativeLayout>
+            <!--<LinearLayout-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginTop="20dp">-->
 
-                <View
-                    android:layout_width="0dp"
-                    android:layout_height="0dp"
-                    android:layout_weight="1" />
+            <!--<TextView-->
+            <!--android:id="@+id/tv_comment"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="评论"-->
+            <!--android:textSize="14sp" />-->
 
-                <ImageView
-                    android:id="@+id/iv_like"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/like" />
-            </LinearLayout>
+            <!--<TextView-->
+            <!--android:id="@+id/tv_comment_num"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="6dp"-->
+            <!--android:text="0"-->
+            <!--android:textSize="12dp" />-->
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="16dp"-->
+            <!--android:text="赞"-->
+            <!--android:textSize="14sp" />-->
+
+            <!--<TextView-->
+            <!--android:id="@+id/tv_like_num"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_marginLeft="6dp"-->
+            <!--android:text="0"-->
+            <!--android:textSize="12dp" />-->
+
+            <!--<View-->
+            <!--android:layout_width="0dp"-->
+            <!--android:layout_height="0dp"-->
+            <!--android:layout_weight="1" />-->
+
+            <!--<ImageView-->
+            <!--android:layout_marginRight="12dp"-->
+            <!--android:id="@+id/iv_like"-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:src="@drawable/like" />-->
+            <!--</LinearLayout>-->
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/rv_comment"
@@ -217,16 +269,17 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="#fff"
-        android:orientation="horizontal"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_marginLeft="12dp"
             android:layout_width="0dp"
             android:layout_height="30dp"
+            android:layout_marginLeft="12dp"
             android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:background="#eee">
+            android:background="#eee"
+            android:gravity="center_vertical">
+
             <EditText
                 android:id="@+id/et_comment"
                 android:layout_width="0dp"
@@ -234,21 +287,23 @@
                 android:layout_weight="1"
                 android:background="@null"
                 android:hint="说点什么吧"
-                android:textSize="12sp"/>
+                android:textSize="12sp" />
         </LinearLayout>
+
         <View
-            android:layout_marginLeft="6dp"
             android:layout_width="1dp"
             android:layout_height="28dp"
-            android:background="#3ef"/>
+            android:layout_marginLeft="6dp"
+            android:background="#3ef" />
+
         <Button
             android:id="@+id/bt_send"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:background="@null"
-            android:textSize="12sp"
+            android:clickable="false"
             android:text="发送"
-            android:clickable="false"/>
+            android:textSize="12sp" />
 
     </LinearLayout>
 </RelativeLayout>

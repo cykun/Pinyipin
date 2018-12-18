@@ -22,13 +22,10 @@ public class HomeFragment extends Fragment {
     private ViewPager viewPager;
     private DachshundTabLayout dachshundTabLayout;
     private FloatingActionButton button;
-    private int userId;
-    private String nikeName;
 
-    public static HomeFragment getInstance(int userId,String nikeName){
+    //创建HomeFragment静态对象
+    public static HomeFragment getInstance(){
         HomeFragment fragment=new HomeFragment();
-        fragment.userId=userId;
-        fragment.nikeName=nikeName;
         return fragment;
     }
 
@@ -62,7 +59,7 @@ public class HomeFragment extends Fragment {
         viewPager.setAdapter(new FragmentPagerAdapter(getChildFragmentManager()) {
             @Override
             public Fragment getItem(int position) {
-                return PageFragment.getInstance(POSTS[position],userId,nikeName);
+                return PageFragment.getInstance(POSTS[position]);
             }
 
             @Override
@@ -81,7 +78,6 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Intent intent=new Intent(getActivity(),PostReleaseActivity.class);
-                intent.putExtra("userId",userId);
                 startActivity(intent);
             }
         });

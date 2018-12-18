@@ -1,6 +1,8 @@
 package team.wucaipintu.pinyipin.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Build;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -24,7 +26,6 @@ import java.util.ArrayList;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import team.wucaipintu.pinyipin.R;
-import team.wucaipintu.pinyipin.bean.User;
 import team.wucaipintu.pinyipin.ui.adapter.ViewPaperAdapter;
 import team.wucaipintu.pinyipin.ui.fragment.ContactFragment;
 import team.wucaipintu.pinyipin.ui.fragment.DialogFragment;
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
 
     private TextBadgeItem textBadgeItem_message;
-    private int userId=-1;
+
+    private String phoneNumber;
     private String nikeName;
     public void onSaveInstanceState(Bundle outState){
         super.onSaveInstanceState(outState);
@@ -66,13 +68,9 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         fragmentArrayList = new ArrayList<>();
         setSupportActionBar(toolbar);
-        Intent intent=getIntent();
-        if(userId==-1){
-            userId=intent.getIntExtra("userId",0);
-        }
-        if(nikeName==null){
-            nikeName=intent.getStringExtra("nikeName");
-        }
+        SharedPreferences preferences=getSharedPreferences("user",Context.MODE_PRIVATE);
+        phoneNumber=preferences.getString("phoneNumber","");
+        nikeName=preferences.getString("nikeName","");
         initView();
     }
 
@@ -116,11 +114,11 @@ public class MainActivity extends AppCompatActivity {
     /* 初始化viewpaper */
     public void initViewPaper() {
         viewPager.setOffscreenPageLimit(3);
-        fragmentArrayList.add(HomeFragment.getInstance(userId,nikeName));
-        fragmentArrayList.add(new DialogFragment());
-        fragmentArrayList.add(ContactFragment.getInstance(userId));
+        fragmentArrayList.add(HomeFragment.getInstance());
+        fragmentArrayList.add(DialogFragment.getInstance(phoneNumber,nikeName));
+        fragmentArrayList.add(ContactFragment.getInstance(phoneNumber,nikeName));
         //fragmentArrayList.add(new UserFragment());
-        fragmentArrayList.add(UserFragment.getInstance());
+        fragmentArrayList.add(UserFragment.getInstance(phoneNumber,nikeName));
         ViewPaperAdapter fragmentPagerAdapter = new ViewPaperAdapter(fragmentManager, fragmentArrayList);
         viewPager.setAdapter(fragmentPagerAdapter);
         viewPager.setCurrentItem(0);

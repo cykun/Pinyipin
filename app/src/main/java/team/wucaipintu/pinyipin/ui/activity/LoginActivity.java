@@ -127,10 +127,9 @@ public class LoginActivity extends AppCompatActivity {
                         SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("phoneNumber", phoneNumber);
-                        //editor.putInt("userId",object.get("userId").getAsInt());
                         editor.putString("name",object.get("name").getAsString());
                         editor.putString("nikeName",object.get("nikeName").getAsString());
-                        editor.putString("region",object.get("address").getAsString());
+                        editor.putString("address",object.get("address").getAsString());
                         editor.putString("sex",object.get("sex").getAsString());
                         editor.putInt("age",object.get("age").getAsInt());
                         editor.commit();

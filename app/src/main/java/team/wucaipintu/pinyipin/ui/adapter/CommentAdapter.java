@@ -40,7 +40,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommnetH
         Comment comment = comments.get(position);
         holder.headIV.setImageResource(R.drawable.name);
         holder.nikenameTV.setText(comment.nikeName);
-        holder.datatimeTV.setText(comment.datatime);
+        holder.datatimeTV.setText(comment.releaseTime);
         holder.contentTV.setText(comment.content);
     }
 

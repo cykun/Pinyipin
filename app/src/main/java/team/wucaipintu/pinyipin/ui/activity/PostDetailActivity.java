@@ -1,6 +1,9 @@
 package team.wucaipintu.pinyipin.ui.activity;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Looper;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -11,8 +14,11 @@ import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -67,6 +73,12 @@ public class PostDetailActivity extends AppCompatActivity {
     @BindView(R.id.bt_add)
     Button addBT;
 
+    @BindView(R.id.ib_like)
+    ImageButton likeIB;
+
+    @BindView(R.id.tv_like_num)
+    TextView likeNumTV;
+
     @BindView(R.id.bt_send)
     Button sendBT;
 
@@ -79,10 +91,12 @@ public class PostDetailActivity extends AppCompatActivity {
     @BindView(R.id.rv_comment)
     RecyclerView recyclerView;
 
-    private int postId,userId;
+    private int postId;
+    private String phoneNumber;
     private ArrayList<Comment> comments;
     private PostDetail postDetail;
     private CommentAdapter adapter;
+    private boolean isLikeed=false;
 
     private String nikeName;
 
@@ -91,16 +105,36 @@ public class PostDetailActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_post_detail);
         ButterKnife.bind(this);
-
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
+            Window window = getWindow();
+            View decorView = window.getDecorView();
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); //可有可无
+            decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+        }
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        SharedPreferences preferences = getSharedPreferences("user", Context.MODE_PRIVATE);
+        phoneNumber=preferences.getString("phoneNumber","");
+        nikeName=preferences.getString("nikeName","123");
         toolbar.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+            }
+        });
+        likeIB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(!isLikeed){
+                    likeIB.setImageResource(R.drawable.liked);
+                    isLikeed=true;
+                } else{
+                    likeIB.setImageResource(R.drawable.like);
+                    isLikeed=false;
+                }
             }
         });
         msgET.addTextChangedListener(new TextWatcher() {
@@ -150,26 +184,19 @@ public class PostDetailActivity extends AppCompatActivity {
         adapter=new CommentAdapter(comments);
         recyclerView.setAdapter(adapter);
         Intent intent = getIntent();
-        postId = intent.getIntExtra("postId", 2);
-        userId=intent.getIntExtra("userId",0);
-        nikeName=intent.getStringExtra("nikeName");
+        postId = intent.getIntExtra("postId", 1);
+//        phoneNumber=intent.getStringExtra("phoneNumber");
+//        nikeName=intent.getStringExtra("nikeName");
         getPostData();
     }
 
-//    public boolean requestAdd(){
-//        //FormBody formBody=new FormBody.Builder().add()
-//
-//        return true;
-//    }
-
     public void addGroupRequest(){
-
 
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://39.108.37.77:8080/pinyipin/group/add");
+                    URL url = new URL("http://39.108.37.77:8080/pinyipin1/group/add");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoOutput(true);
                     httpURLConnection.setDoInput(true);
@@ -178,7 +205,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     httpURLConnection.setRequestProperty("connection", "Keep-Alive");
                     httpURLConnection.setRequestProperty("user-agent",
                             "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-                    String param = "userId="+userId+"&groupId="+postDetail.groupId;
+                    String param = "phoneNumber="+phoneNumber+"&groupId="+postDetail.groupId;
                     httpURLConnection.connect();
                     PrintWriter writer = new PrintWriter(httpURLConnection.getOutputStream());
                     writer.print(param);
@@ -223,7 +250,7 @@ public class PostDetailActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://39.108.37.77:8080/pinyipin/post/detail");
+                    URL url = new URL("http://39.108.37.77:8080/pinyipin1/post/detail");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoOutput(true);
                     httpURLConnection.setDoInput(true);
@@ -252,7 +279,7 @@ public class PostDetailActivity extends AppCompatActivity {
                             titleTV.setText(postDetail.title);
                             contentTV.setText(postDetail.content);
                             deallineTV.setText(postDetail.deadline);
-                            releaseTimeTV.setText(postDetail.datatime);
+                            releaseTimeTV.setText(postDetail.releaseTime);
                             nikeNameTV.setText(postDetail.nikeName);
                             needTV.setText(String.valueOf(postDetail.needNum));
                             nowTV.setText("0");
@@ -260,8 +287,9 @@ public class PostDetailActivity extends AppCompatActivity {
                             for(Comment comment:postDetail.comments){
                                 comments.add(comment);
                             }
+                            commentNumTV.setText(String.valueOf(comments.size()));
                             adapter.notifyDataSetChanged();
-                            Toast.makeText(PostDetailActivity.this,""+userId+":"+postDetail.groupId,Toast.LENGTH_LONG).show();
+                            //Toast.makeText(PostDetailActivity.this,""+userId+":"+postDetail.groupId,Toast.LENGTH_LONG).show();
                         }
                     });
                 } catch (IOException e) {
@@ -278,13 +306,13 @@ public class PostDetailActivity extends AppCompatActivity {
         Comment comment=new Comment();
         comment.content=content;
         comment.nikeName=nikeName;
-        comment.datatime=format.format(date);
+        comment.releaseTime=format.format(date);
         comments.add(comment);
         new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://39.108.37.77:8080/pinyipin/comment/add");
+                    URL url = new URL("http://39.108.37.77:8080/pinyipin1/comment/add");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoOutput(true);
                     httpURLConnection.setDoInput(true);
@@ -293,7 +321,7 @@ public class PostDetailActivity extends AppCompatActivity {
                     httpURLConnection.setRequestProperty("connection", "Keep-Alive");
                     httpURLConnection.setRequestProperty("user-agent",
                             "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-                    String param = "userId="+userId+"&postId="+postId+"&content="+content;
+                    String param = "phoneNumber="+phoneNumber+"&postId="+postId+"&content="+content;
                     httpURLConnection.connect();
                     PrintWriter writer = new PrintWriter(httpURLConnection.getOutputStream());
                     writer.print(param);
@@ -301,13 +329,13 @@ public class PostDetailActivity extends AppCompatActivity {
                     BufferedReader reader = new BufferedReader(new InputStreamReader(httpURLConnection.getInputStream()));
                     String data = reader.readLine();
 
-                    //System.out.println(data);
                     writer.close();
                     reader.close();
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             adapter.notifyDataSetChanged();
+                            commentNumTV.setText(String.valueOf(comments.size()));
                         }
                     });
                 } catch (IOException e) {}

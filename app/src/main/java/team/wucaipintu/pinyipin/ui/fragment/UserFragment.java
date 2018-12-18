@@ -3,6 +3,7 @@ package team.wucaipintu.pinyipin.ui.fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
@@ -34,7 +35,13 @@ public class UserFragment extends Fragment {
 
     private Unbinder unBinder;
 
-    public static UserFragment getInstance(){
+    private String phoneNUmber;
+    private String nikeName;
+
+    public static UserFragment getInstance(String phoneNumber, String nikeName){
+        UserFragment fragment=new UserFragment();
+        fragment.phoneNUmber=phoneNumber;
+        fragment.nikeName=nikeName;
         return new UserFragment();
     }
 
@@ -56,15 +63,12 @@ public class UserFragment extends Fragment {
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this,view);
-//        userLL = view.findViewById(R.id.linearlayout_user);
-//        creditLL = view.findViewById(R.id.linearlayout_credit);
-//        postLL = view.findViewById(R.id.linearlayout_post);
-//        settingLL = view.findViewById(R.id.linearlayout_setting);
     }
 
     @Override
     public void onActivityCreated(@Nullable Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
+
         userLL.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

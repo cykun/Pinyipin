@@ -2,6 +2,7 @@ package team.wucaipintu.pinyipin.ui.fragment;
 
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
@@ -26,10 +27,18 @@ public class DialogFragment extends Fragment {
     private RecyclerView messageRV;
     private List<Dialog> dialogList;
     private boolean isFirstLoad = true;
-    private int userId=0;
+    private String phoneNumber;
+    private String nikeName;
 
-    public DialogFragment() {
+    public static DialogFragment getInstance(String phoneNumber,String nikeName){
+        DialogFragment fragment=new DialogFragment();
+        fragment.phoneNumber=phoneNumber;
+        fragment.nikeName=nikeName;
+        return fragment;
     }
+
+//    private DialogFragment() {
+//    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -52,7 +61,7 @@ public class DialogFragment extends Fragment {
             @Override
             public void onItemClick(View view, int position) {
                 Intent intent=new Intent(getActivity(),ChatRoomActivity.class);
-                intent.putExtra("userId",userId);
+                intent.putExtra("phoneNumber",phoneNumber);
                 startActivity(intent);
             }
 
@@ -63,20 +72,19 @@ public class DialogFragment extends Fragment {
         }));
         if (isFirstLoad) {
             dialogList = new ArrayList<>();
-            loadData();
         }
         //initData();
         messageRV.setAdapter(new MessageAdapter(dialogList));
     }
 
-    public void loadData() {
-        Dialog dialog=new Dialog();
-        dialog.setName("昵称");
-        dialog.setContent("你好");
-        dialog.setHeadId(R.drawable.defaulthead);
-        dialog.setDatatime("2018/11/30 21:32");
-        for (int i = 0; i < 4; i++) {
-            dialogList.add(dialog);
-        }
-    }
+//    public void loadData() {
+//        Dialog dialog=new Dialog();
+//        dialog.setName("昵称");
+//        dialog.setContent("你好");
+//        dialog.setHeadId(R.drawable.defaulthead);
+//        dialog.setDatatime("2018/11/30 21:32");
+//        for (int i = 0; i < 4; i++) {
+//            dialogList.add(dialog);
+//        }
+//    }
 }

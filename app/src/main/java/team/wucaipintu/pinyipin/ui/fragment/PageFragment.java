@@ -2,6 +2,7 @@ package team.wucaipintu.pinyipin.ui.fragment;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
@@ -41,16 +42,12 @@ public class PageFragment extends Fragment {
     private TwinklingRefreshLayout refreshLayout;
     private PostAdapter postAdapter;
     public String type;
-    private int userId;
-    private String nikeName;
     private boolean isFirstLoad = true;
     private boolean isInitView=false;
 
-    public static PageFragment getInstance(String type,int userId,String nikeName) {
+    public static PageFragment getInstance(String type) {
         PageFragment pageFragment = new PageFragment();
         pageFragment.type = type;
-        pageFragment.userId=userId;
-        pageFragment.nikeName=nikeName;
         return pageFragment;
     }
 
@@ -97,8 +94,6 @@ public class PageFragment extends Fragment {
             public void onItemClick(View view, int position) {
                 Intent intent = new Intent(getActivity(), PostDetailActivity.class);
                 intent.putExtra("postId",postItemList.get(position).getPostId());
-                intent.putExtra("userId",userId);
-                intent.putExtra("nikeName",nikeName);
                 startActivity(intent);
             }
 
@@ -107,13 +102,6 @@ public class PageFragment extends Fragment {
 
             }
         }));
-//        if (isFirstLoad) {
-////            postItemList = new ArrayList<>();
-////            if (type.equals("推荐")) {
-////                loadDataFromDataBase();
-////            }
-////            isFirstLoad = false;
-////        }
         initListener();
         postAdapter = new PostAdapter(postItemList);
         recyclerView.setAdapter(postAdapter);
@@ -177,7 +165,7 @@ public class PageFragment extends Fragment {
             @Override
             public void run() {
                 try {
-                    URL url = new URL("http://39.108.37.77:8080/pinyipin/post/item");
+                    URL url = new URL("http://39.108.37.77:8080/pinyipin1/post/item");
                     HttpURLConnection httpURLConnection = (HttpURLConnection) url.openConnection();
                     httpURLConnection.setDoOutput(true);
                     httpURLConnection.setDoInput(true);
@@ -187,9 +175,9 @@ public class PageFragment extends Fragment {
                             "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
                     String param;
                     if(type.equals("推荐")){
-                        param="datatime=2017/11/25 12:15";
+                        param="releaseTime=2017/11/25 12:15";
                     }else {
-                        param="type="+type+"&datatime=2017/11/25 12:15";
+                        param="type="+type+"&releaseTime=2017/11/25 12:15";
                     }
                     httpURLConnection.connect();
                     PrintWriter writer=new PrintWriter(httpURLConnection.getOutputStream());
