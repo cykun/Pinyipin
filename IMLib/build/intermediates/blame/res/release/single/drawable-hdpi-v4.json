@@ -1,0 +1,22 @@
+[
+    {
+        "merged": "D:\\android project\\Pinyipin-master\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\notification_bg_low_normal.9.png",
+        "source": "C:\\Users\\陈顺兴\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\f1feb9ba096f546836a5f6321b12a77a\\res\\drawable-hdpi-v4\\notification_bg_low_normal.9.png"
+    },
+    {
+        "merged": "D:\\android project\\Pinyipin-master\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\notify_panel_notification_icon_bg.png",
+        "source": "C:\\Users\\陈顺兴\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\f1feb9ba096f546836a5f6321b12a77a\\res\\drawable-hdpi-v4\\notify_panel_notification_icon_bg.png"
+    },
+    {
+        "merged": "D:\\android project\\Pinyipin-master\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\notification_bg_low_pressed.9.png",
+        "source": "C:\\Users\\陈顺兴\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\f1feb9ba096f546836a5f6321b12a77a\\res\\drawable-hdpi-v4\\notification_bg_low_pressed.9.png"
+    },
+    {
+        "merged": "D:\\android project\\Pinyipin-master\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\notification_bg_normal.9.png",
+        "source": "C:\\Users\\陈顺兴\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\f1feb9ba096f546836a5f6321b12a77a\\res\\drawable-hdpi-v4\\notification_bg_normal.9.png"
+    },
+    {
+        "merged": "D:\\android project\\Pinyipin-master\\IMLib\\build\\intermediates\\res\\merged\\release\\drawable-hdpi-v4\\notification_bg_normal_pressed.9.png",
+        "source": "C:\\Users\\陈顺兴\\.gradle\\caches\\transforms-1\\files-1.1\\support-compat-26.0.0.aar\\f1feb9ba096f546836a5f6321b12a77a\\res\\drawable-hdpi-v4\\notification_bg_normal_pressed.9.png"
+    }
+]
