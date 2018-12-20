@@ -117,7 +117,7 @@ public class PostReleaseActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Year=datePicker.getYear();
-                        String smonth=datePicker.getMonth()<10?"0"+datePicker.getMonth():""+datePicker.getMonth();
+                        String smonth=datePicker.getMonth()+1<10?"0"+(datePicker.getMonth()+1):""+(datePicker.getMonth()+1);
                         String sday=datePicker.getDayOfMonth()<10?"0"+datePicker.getDayOfMonth():""+datePicker.getDayOfMonth();
                         String shour=timePicker.getCurrentHour()<10 ? "0"+timePicker.getCurrentHour():""+timePicker.getCurrentHour();
                         String sminute=timePicker.getCurrentMinute()<10 ? "0"+timePicker.getCurrentMinute():""+timePicker.getCurrentMinute();
