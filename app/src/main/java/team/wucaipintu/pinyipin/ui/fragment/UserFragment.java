@@ -108,3 +108,4 @@ public class UserFragment extends Fragment {
         unBinder.unbind();
     }
 }
+                                                                        
