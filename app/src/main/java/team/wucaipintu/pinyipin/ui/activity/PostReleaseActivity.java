@@ -1,151 +1,146 @@
 package team.wucaipintu.pinyipin.ui.activity;
 
+import android.annotation.SuppressLint;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.EditText;
-import android.widget.Spinner;
+import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.TimePicker;
+import android.widget.Toast;
 
-import java.io.IOException;
+import java.util.Calendar;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.FormBody;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.Response;
 import team.wucaipintu.pinyipin.R;
-import team.wucaipintu.pinyipin.util.JsonUtil;
 
 public class PostReleaseActivity extends AppCompatActivity {
-    @BindView(R.id.toolbar)
-    public Toolbar toolbar;
+    private ImageView backIV;
+    private TextView releaseTV;
+    private ImageView addImageIV;
+    private EditText timeET;
+    private TimePicker timePicker;
+    private DatePicker datePicker;
+    private int Year;
+    private int Month;
+    private int Day;
+    private int Hour;
+    private int Minute;
 
-    @BindView(R.id.s_type)
-    public Spinner typeS;
-
-    private OkHttpClient okHttpClient;
-
-    @BindView(R.id.et_title)
-    public EditText titleET;
-
-    @BindView(R.id.et_content)
-     public EditText  contentET;
-
-    @BindView(R.id.et_deadline)
-    public EditText deadlineET;
-
-    @BindView(R.id.et_population)
-    public EditText populationET;
-
-    @BindView(R.id.et_location)
-    public EditText locationET;
-
-    @BindView(R.id.et_neednum)
-    public EditText neednumEt;
-
-    @BindView(R.id.et_group)
-    public EditText groupET;
-
-    private String userId;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_post);
-        Intent intent=getIntent();
-        userId=String.valueOf(intent.getIntExtra("userId",0));
-        ButterKnife.bind(this);
 
-        setSupportActionBar(toolbar);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+        initView();
+        initListener();
+    }
+
+    public void initView() {
+        backIV=(ImageView)findViewById(R.id.imageView_back);
+        releaseTV=(TextView) findViewById(R.id.textView_release);
+        addImageIV=(ImageView) findViewById(R.id.imageView_add);
+        timeET=(EditText) findViewById(R.id.editText_time);
+    }
+
+    public void initListener(){
+        backIV.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 finish();
+                }
+        });
+
+        releaseTV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(PostReleaseActivity.this);
+                builder.setMessage("发布成功");
+                builder.show();
+
+                //延时关闭窗口,跳转主页
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        finish();
+                        Intent intent = new Intent(PostReleaseActivity.this,MainActivity.class);
+                        startActivity(intent);
+                    }
+                },1000);
             }
         });
-        okHttpClient=new OkHttpClient();
+
+        addImageIV.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+            }
+        });
+
+        timeET.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                View view=View.inflate(getApplicationContext(),R.layout.dialog_timepicker,null);
+                datePicker=(DatePicker)view.findViewById(R.id.datePicker);
+                timePicker=(TimePicker)view.findViewById(R.id.timePicker);
+                final Calendar c=Calendar.getInstance();
+
+                Year=c.get(Calendar.YEAR);
+                Month=c.get(Calendar.MONTH);
+                Day=c.get(Calendar.DAY_OF_MONTH);
+                datePicker.init(Year, Month, Day, new DatePicker.OnDateChangedListener() {
+                    @Override
+                    public void onDateChanged(DatePicker dpview, int year, int monthOfYear, int dayOfMonth) {
+                    }
+                });
+
+                Hour=c.get(Calendar.HOUR_OF_DAY);
+                Minute=c.get(Calendar.MINUTE);
+                timePicker.setIs24HourView(true);
+                timePicker.setCurrentHour(Hour);
+                timePicker.setCurrentMinute(Minute);
+                timePicker.setOnTimeChangedListener(new TimePicker.OnTimeChangedListener() {
+                    @Override
+                    public void onTimeChanged(TimePicker tpview, int hourOfDay, int minute) {
+                    }
+                });
+
+                AlertDialog.Builder builder=new AlertDialog.Builder(PostReleaseActivity.this);
+                builder.setView(view);
+                builder.setTitle("设置时间");
+                builder.setPositiveButton("确定", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Year=datePicker.getYear();
+                        String smonth=datePicker.getMonth()+1<10?"0"+(datePicker.getMonth()+1):""+(datePicker.getMonth()+1);
+                        String sday=datePicker.getDayOfMonth()<10?"0"+datePicker.getDayOfMonth():""+datePicker.getDayOfMonth();
+                        String shour=timePicker.getCurrentHour()<10 ? "0"+timePicker.getCurrentHour():""+timePicker.getCurrentHour();
+                        String sminute=timePicker.getCurrentMinute()<10 ? "0"+timePicker.getCurrentMinute():""+timePicker.getCurrentMinute();
+
+                        timeET.setText("    "+Year+"/"+smonth+"/"+sday+" "+shour+":"+sminute);
+                        dialog.cancel();
+                    }
+                });
+                builder.setNegativeButton("取消", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+                builder.show();
+            }
+        });
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.releasepost_toolbar, menu);
-        return true;
-    }
+    public class postThread extends Thread{
 
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_send:
-                if(titleET.getText().toString().equals("") || contentET.getText().toString().equals("")){
+        public postThread(){
 
-                }else {
-                    post();
-                }
-                break;
         }
-        return super.onOptionsItemSelected(item);
     }
-
-    //发起post请求
-    private void post(){
-        FormBody formBody=new FormBody.Builder()
-                .add("title",titleET.getText().toString())
-                .add("content",contentET.getText().toString())
-                .add("dealline",deadlineET.getText().toString())
-                .add("groupName",groupET.getText().toString())
-                .add("population",populationET.getText().toString())
-                .add("location",locationET.getText().toString())
-                .add("needNum",neednumEt.getText().toString())
-                .add("userId",userId)
-                .add("type",(String)typeS.getSelectedItem())
-                .build();
-        Request request=new Request.Builder()
-                .url("http://39.108.37.77:8080/pinyipin/post/add")
-                .post(formBody)
-                .build();
-        okHttpClient.newCall(request).enqueue(new Callback() {
-            @Override
-            public void onFailure(Call call, IOException e) {
-
-            }
-
-            @Override
-            public void onResponse(Call call, Response response) throws IOException {
-                String bodyData=response.body().string();
-                int code=JsonUtil.getValue(bodyData,"code");
-                if(code==1){
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showDialog("提示","发布成功");
-                        }
-                    });
-                }else {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            showDialog("提示","发布失败");
-                        }
-                    });
-                }
-            }
-        });
-    }
-
-    public void showDialog(String title,String msg){
-        AlertDialog.Builder builder=new AlertDialog.Builder(PostReleaseActivity.this);
-        builder.setTitle(title);
-        builder.setMessage(msg);
-        builder.setPositiveButton("好",null);
-        builder.show();
-    }
-
 }
