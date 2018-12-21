@@ -3,6 +3,7 @@ package team.wucaipintu.pinyipin.bean;
 import com.stfalcon.chatkit.commons.models.IUser;
 
 public class Author implements IUser {
+	
     private String id;
     private String name;
     private String avatar;

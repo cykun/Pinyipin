@@ -1,6 +1,7 @@
 package team.wucaipintu.pinyipin.bean;
 
 public class NewFriendRequest {
+	
     private int headId;
     private String name;
     private int request;

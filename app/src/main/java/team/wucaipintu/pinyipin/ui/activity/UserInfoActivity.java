@@ -39,12 +39,13 @@ public class UserInfoActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+		
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_info);
         ButterKnife.bind(this);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M){
             Window window = getWindow();
-            View decorView = window.getDecorView();
+            View decorView = window.getDecorView();//
             window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS); //可有可无
             decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
         }
